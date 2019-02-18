@@ -1,0 +1,1 @@
+{"err":null,"data":{"gameId":"abcd","roundId":1,"participants":[{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"},{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"},{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"}]},"requestId":"request1"}

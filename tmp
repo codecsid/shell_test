@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 305
+ETag: W/"131-iMEOm8/qBxlI2MmQ99eW3FU66Wg"
+Date: Mon, 18 Feb 2019 19:48:15 GMT
+Connection: keep-alive
+
+{"err":"error","data":{"gameId":"abcd","roundId":1,"participants":[{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"},{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"},{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"}]},"requestId":"request1"}
