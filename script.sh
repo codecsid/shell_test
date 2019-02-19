@@ -1,5 +1,5 @@
 #!/bin/bash
-curl -is "localhost:3000" > tmp
+curl -is "localhost:3000/api/ninja/gamestatus" > tmp
 status=`awk '/^H/{print $2}' tmp`
 response=`awk '/^{/' tmp`
 err=`echo $response | jq '.err'`
@@ -20,7 +20,7 @@ if [ $num_participants == 0 ]; then
     echo "No participants"
 else
     i=0
-    while [ "$i" -lt "$num_participants" ];
+    while [ $i -lt $num_participants ];
     do
         query=".[$i]"
         participant=`echo $participants | jq $query`

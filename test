@@ -1,9 +1,0 @@
-HTTP/1.1 200 OK
-Access-Control-Allow-Origin: *
-Content-Type: application/json
-X-Cloud-Trace-Context: 22105bf9ee1faf23c1ed8ec1b30a62d1
-Date: Sat, 16 Feb 2019 18:28:22 GMT
-Server: Google Frontend
-Content-Length: 24
-
-{"ip": "116.74.192.54"}
