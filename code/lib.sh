@@ -12,7 +12,7 @@ response()
 
 err()
 {
-    error=`<<< $1 jq '.err'`
+    echo $(<<< $1 jq '.err')
 }
 
 data()

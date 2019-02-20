@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 . ./config.sh
 . ./gameApi.sh
 . ./lib.sh
@@ -25,7 +25,7 @@ gameStatusRecieved()
     gameId=`<<< $data jq '.gameId' | sed 's/"//g'`
     roundId=`<<< $data jq '.roundId'`
     secretLength=`<<< $data jq '.secretLength'`
-    participants=`<<< $data jq '.participants'`
+    participants="$(<<< $data jq '.participants' | sed 's/ //g')"
     state=`<<< $data jq '.state' | sed 's/"//g'`
     num_participants=`<<< $participants jq length`
     key="$gameId-$roundId"
@@ -77,7 +77,25 @@ gameStatusRecieved()
         then
             if [ "$amIalive" = "true" ];
             then
-                mynextGuess=`nextGuess $gameId $roundId $secretLength $participants $myGuessTracker`
+                declare -A aliveParticipants
+                i=0
+                j=0
+                while [ $i -lt $num_participants ];
+                do
+                    query=".[$i]"
+                    participant=`<<< $participants jq $query`
+                    name=`<<< $participant jq '.name' | sed 's/"//g'`
+                    isAlive=`<<< $participant jq '.isAlive'`
+                    if [ $name != $teamname ] && [ $isAlive = "true" ];
+                    then
+                        aliveParticipants[$j]=$participant
+                        j=`expr $j + 1`
+                    fi
+                    i=`expr $i + 1`
+                done
+
+                totalParticipants=$j
+                mynextGuess="$(nextGuess $gameId $roundId $secretLength $totalParticipants "$aliveParticipants")"
                 guesses=`<<< $mynextGuess jq '.guesses'`
                 num_guesses=`<<< $guesses jq length`
 
@@ -109,6 +127,9 @@ gameStatusRecieved()
                             done
                             echo "Guess Successful : Score $totalScore"
                             echo "Result : $responseData"
+
+                            guessKey="$gameId-$roundId"
+                            myGuessTracker[$guessKey]=$data
                         fi
                     else
                         echo "Guess Failed"

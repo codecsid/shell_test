@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 a="123"
 b="123"
 if [ $a = $b ];
@@ -33,3 +33,11 @@ if [ $status -gt 200 ];
 then
     echo "true"
 fi
+
+declare -A fullNames
+fullNames=( ["lhunath"]="Maarten Billemont" ["greycat"]="Greg Wooledge" )
+
+for user in "${!fullNames[@]}"
+do
+    echo "User: $user, fullname: ${fullNames[$user]}."
+done
