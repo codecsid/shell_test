@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 . ./config.sh
 . ./gameApi.sh
 . ./lib.sh
+. ./mySmartAlgo.sh
 
 declare -A myGuessTracker
 
@@ -47,7 +48,7 @@ gameStatusRecieved()
                 haveIJoined="true"
                 amIalive="$isAlive"
             fi
-            let i+=1
+            i=`expr $i + 1`
         done
     fi
 
@@ -72,12 +73,58 @@ gameStatusRecieved()
 
     elif [ "$state" = "running" ];
     then
-        echo " "
+        if [ $haveIJoined ];
+        then
+            if [ "$amIalive" = "true" ];
+            then
+                mynextGuess=`nextGuess $gameId $roundId $secretLength $participants $myGuessTracker`
+                guesses=`<<< $mynextGuess jq '.guesses'`
+                num_guesses=`<<< $guesses jq length`
+
+                if [ $num_guesses -gt 0 ];
+                then
+                    echo "My Guess: $mynextGuess"
+                    response=`guess $mynextGuess`
+                    status=`status_code "$response"`
+                    if [ $status -ge 200 ] && [ $status -lt 300 ];
+                    then
+                        responseData=`response "$response"`
+                        err="$(err "$responseData")"
+                        data=`data "$responseData"`
+                        if [ "$(<<< $err awk '{print substr($0, "null")}')" == 0 ]
+                        then
+                            echo "Guess Failed" $status $err
+                        else
+                            totalScore=0
+                            guesses=`<<< $data jq '.guesses'`
+                            num_guesses=`<<< $data jq length`
+                            i=0
+                            while [ $i -lt $num_guesses ];
+                            do
+                                query=".[$i]"
+                                guess=`<<< $guesses jq $query`
+                                score=`<<< $guess jq '.score'`
+                                totalScore=`expr $totalScore + $score`
+                                i=`expr $i + 1`
+                            done
+                            echo "Guess Successful : Score $totalScore"
+                            echo "Result : $responseData"
+                        fi
+                    else
+                        echo "Guess Failed"
+                    fi
+                fi
+            else
+                echo "I am dead, waiting to respawn in next round ..... :("
+            fi
+        else
+            echo "Oho, I have missed the joining phase, let me wait till the next round starts."
+        fi
 
     elif [ "$state" = "finished" ];
     then
         echo "Round $roundId is finished. Wait until next round begins."
-        
+
     fi
 }
 

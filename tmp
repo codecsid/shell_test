@@ -1,9 +1,9 @@
 HTTP/1.1 200 OK
 X-Powered-By: Express
 Content-Type: application/json; charset=utf-8
-Content-Length: 320
-ETag: W/"140-wY0XM/X0ehZS5b0TBge3GcUBhc8"
-Date: Tue, 19 Feb 2019 19:29:48 GMT
+Content-Length: 319
+ETag: W/"13f-PK+aovxfM+7FN5IqtbyMmu9Tpho"
+Date: Wed, 20 Feb 2019 06:36:17 GMT
 Connection: keep-alive
 
-{"err":null,"data":{"gameId":"abcd","roundId":1,"state":"joining","participants":[{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"},{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"},{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"}]},"requestId":"request1"}
+{"err":null,"data":{"gameId":"abcd","roundId":1,"state":"finished","participants":[{"name":"GRB","guess":"12345","isAlive":true,"lastGuessTime":"1234"},{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"},{"name":"team1","guess":"12345","isAlive":true,"lastGuessTime":"1234"}],"requestId":"request1"}}
